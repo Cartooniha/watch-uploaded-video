@@ -30,14 +30,14 @@ const dotenv = (function(){
     }
 }());
 
+const env = { ...process.env };
 const dotenvKeys = keys( dotenv );
 const processEnvkeys = keys( process.env );
 
 const diff = difference( dotenvKeys, processEnvkeys );
 
 diff.forEach(function( key ){
-    process.env[ key ] = dotenv[ key ];
+    env[ key ] = dotenv[ key ];
 });
 
-const env = { ...process.env };
 module.exports = { env };
