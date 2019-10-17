@@ -1,6 +1,7 @@
 const { readdir, readdirSync } = require( "fs" );
 const { basename } = require( "path" );
 
+const { env } = require( "./user_modules/readConfigFile.js" );
 const { pollReadDir } = require( "./user_modules/readDirectory.js" );
 const { readDatabase,
         writeToDatabase,
@@ -9,7 +10,7 @@ const { readDatabase,
 
 const APP_ROOT = __dirname;
 const log = console.log.bind( console );
-const filesPath = "/tmp";
+const filesPath = env.UPLOAD_DIR;
 
 const db = readDatabase( APP_ROOT + dbPath, dbName );
 
