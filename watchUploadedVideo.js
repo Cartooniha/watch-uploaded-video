@@ -11,7 +11,7 @@ const APP_ROOT = __dirname;
 const log = console.log.bind( console );
 const filesPath = "/tmp";
 
-const db = readDatabase( dbPath, dbName );
+const db = readDatabase( APP_ROOT + dbPath, dbName );
 
 pollReadDir( filesPath, 2, null, function( list ){
     
@@ -51,5 +51,5 @@ pollReadDir( filesPath, 2, null, function( list ){
     });
 
     log( `WRITE: ${newRecors.length} records(s) to ${dbName}` );
-    writeToDatabase( dbPath, dbName, db );
+    writeToDatabase( APP_ROOT + dbPath, dbName, db );
 });
