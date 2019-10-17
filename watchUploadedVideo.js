@@ -1,11 +1,11 @@
 const { readdir, readdirSync } = require( "fs" );
 const { basename } = require( "path" );
 
-const { pollReadDir } = require( "./lm/readDirectory.js" );
+const { pollReadDir } = require( "./user_modules/readDirectory.js" );
 const { readDatabase,
         writeToDatabase,
         dbPath,
-        dbName } = require( "./lm/databaseManager.js" );
+        dbName } = require( "./user_modules/databaseManager.js" );
 
 const APP_ROOT = __dirname;
 const log = console.log.bind( console );
