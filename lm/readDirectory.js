@@ -1,13 +1,20 @@
 const { readdir, readdirSync } = require( "fs" );
 
-function pollReadDir( readPath, ms, n, cb ){
+/*
+    pollReadDir()
+    readPath: path that is read
+    seconds: number of seconds for delay
+    repetition: times of repetition and then stop
+    callback: callback to call back the result
+*/
+function pollReadDir( readPath, seconds, repetition, callback ){
     const validFormat = [ ".mp4", ".avi", ".mpeg", ".flv", ".mkv" ];
 
     const intervalId =
     setInterval(function(){
         
         // run N times and exit
-        if( --n === 0 ){
+        if( --repetition === 0 ){
             clearInterval( intervalId );
         }
 
@@ -20,8 +27,8 @@ function pollReadDir( readPath, ms, n, cb ){
         })
 
         // tell the callback
-        cb( validFile );
-    }, ms )
+        callback( validFile );
+    }, seconds * 1000 )
 }
 
 module.exports = {

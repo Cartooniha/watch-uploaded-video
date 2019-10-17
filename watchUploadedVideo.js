@@ -13,7 +13,7 @@ const filesPath = "/tmp";
 
 const db = readDatabase( dbPath, dbName );
 
-pollReadDir( filesPath, 2000, null, function( list ){
+pollReadDir( filesPath, 2, null, function( list ){
     
     const intervalDate = new Date().toString();
     log( "POLL:", intervalDate );
