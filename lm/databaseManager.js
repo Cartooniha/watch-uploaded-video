@@ -4,7 +4,7 @@ const log = console.log.bind( console );
 const sfy = JSON.stringify.bind( JSON );
 const parse = JSON.parse.bind( JSON );
 
-const dbPath = "/db";
+const dbPath = "/database";
 const dbName = "uploaded-videos.json";
 
 function readDatabase( path, file ){
