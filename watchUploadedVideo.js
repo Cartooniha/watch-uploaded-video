@@ -36,7 +36,7 @@ pollReadDir( filesPath, 2, null, function( list ){
     if( !notInDb.length ) return;
 
     // should be inserted to database
-    const newRecors =
+    const newRecords =
     notInDb.map(function( name, index ){
         index = index + videosMaxId + 1;
         return {
@@ -47,10 +47,10 @@ pollReadDir( filesPath, 2, null, function( list ){
     })
 
     // insert to database
-    newRecors.forEach(function( nr ){
+    newRecords.forEach(function( nr ){
         db.push( nr );
     });
 
-    log( `WRITE: ${newRecors.length} records(s) to ${dbName}` );
+    log( `WRITE: ${newRecords.length} records(s) to ${dbName}` );
     writeToDatabase( APP_ROOT + dbPath, dbName, db );
 });
