@@ -1,5 +1,4 @@
 const { readFileSync } = require( "fs" );
-const R = require( "ramda" );
 
 const parse = JSON.parse.bind( JSON );
 const log   = console.log.bind( console );
