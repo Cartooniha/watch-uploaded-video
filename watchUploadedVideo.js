@@ -1,6 +1,3 @@
-const { readdir, readdirSync } = require( "fs" );
-const { basename } = require( "path" );
-
 const { env } = require( "./user_modules/readConfigFile.js" );
 const { pollReadDir } = require( "./user_modules/readDirectory.js" );
 const { readDatabase,
@@ -14,41 +11,48 @@ const filesPath = env.UPLOAD_DIR;
 
 const db = readDatabase( APP_ROOT + dbPath, dbName );
 
-pollReadDir( filesPath, 2, null, function( list ){
-    
-    const intervalDate = new Date().toString();
-    log( "POLL:", intervalDate );
-
-    let videos =
-    db.map(function( record ){
-        return record.filename;
-    });
-    const videosMaxId = videos.length;
-
-    const notInDb =
-    list.filter(function( item ){
-        return !videos.some(function( vidoe ){
-            return vidoe === item
+const findAddedVideos = (totalItems, oldItems) => {
+    return totalItems.filter(function( item ){
+        return !oldItems.some(function( video ){
+            return video === item
         });
-    })
+    });
+};
 
-    // if not-in-db is empty do nothing
-    if( !notInDb.length ) return;
-
-    // should be inserted to database
-    const newRecords =
-    notInDb.map(function( name, index ){
-        index = index + videosMaxId + 1;
+const makeNewRecord = (totalVideos) => {
+    return ((name, index) => {
+        index = index + totalVideos + 1;
         return {
             id: index,
             filename: name,
             m3u8: false
         };
     })
+};
+
+pollReadDir( filesPath, 2, null, ( list ) => {
+
+    const intervalDate = new Date().toString();
+    log( "POLL:", intervalDate );
+
+    let alreadyVideos =
+    db.map(function( record ){
+        return record.filename;
+    });
+
+    const addedVideos = findAddedVideos(list, alreadyVideos);
+
+    // if there is nothing too add do nothing
+    if( !addedVideos.length ) return;
+
+    // should be inserted to database
+    const totalVideos = alreadyVideos.length;
+    const newRecordMaker = makeNewRecord(totalVideos);
+    const newRecords = addedVideos.map(newRecordMaker);
 
     // insert to database
-    newRecords.forEach(function( nr ){
-        db.push( nr );
+    newRecords.forEach(( newRecord ) => {
+        db.push( newRecord );
     });
 
     log( `WRITE: ${newRecords.length} records(s) to ${dbName}` );
